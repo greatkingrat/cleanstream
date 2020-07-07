@@ -1,56 +1,55 @@
 var jQuery = $;
 var $domain = (location.host.match(/([^.]+)\.\w{2,3}(?:\.\w{2})?$/) || [])[1];
+var $head = $("head");
+var $body = $("body");
 var $iframes = $("iframe");
 var $objects = $("object");
-var $videos = $("video");
-var $embeds = ['navixsport'];
+var $video = $("video");
+var $style = 'position:relative;z-index:1;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both';
+var $ask, $source, $object;
 var $stylesheet = [];
+    $stylesheet.push('body{margin:30px 0px 0px;padding:0px;text-align:center;background:#000;overflow:hidden}');
+    $stylesheet.push('.idle{cursor:none!important}');
+    $stylesheet.push('#video{'+$style+'}');
+    $stylesheet.push('a{position:absolute;z-index:0;top:200px;left:0;width:100%;text-align:center;color:#fff}');
+    $stylesheet.push('iframe{margin:0px;padding:0px;border:0px;overflow:hidden}');
+    $stylesheet.push('video{max-width:100%;max-height:100%}');
 
-$stylesheet.push('.idle{cursor:none!important;}');
+var $meta = '<title>CleanStream</title><style type="text/css">'+$stylesheet.join("\n")+'</style>';
+var $github = '<a href="https://github.com/greatkingrat/cleanstream/">Github</a>';
 
-var $head = '<title>CleanStream</title><style type="text/css">'+$stylesheet.join("\n")+'</style>';
-
-if ($embeds.includes($domain) && $objects.length > 0) {
-    var $style = "position:relative;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both;";
-    var wrapper = $objects.parent();
-    $("head").html($head);
-    wrapper.removeAttr("style").attr("style", "width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;");
-    $("body").attr("style", "margin:30px 0px 0px;padding:0px;text-align:center;background:#000;overflow:hidden;").html(wrapper);
-} else if ($domain == 'rjh217') {
-    var $style = "position:relative;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both;";
-    video = $("#vid");
-    $("head").html($head);
-    $("body").attr("style", "margin:30px 0px 0px;padding:0px;text-align:center;background:#000;overflow:hidden;").html('<div id="video" style="'+$style+'"></div>');
-    $("#video").html(video);
-    $("#vid > div").css("height", "576px");
-} else if ($videos.length > 0) {
-    var $style = "position:relative;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both;";
-    $("head").html($head);
-    $("body").attr("style", "margin:30px 0px 0px;padding:0px;text-align:center;background:#000;overflow:hidden;").html('<div id="video" style="'+$style+'"></div>');
-    $("#video").html($videos);
+if ($objects.length > 0) {
+    $object = $objects.parent();
+    $object.removeAttr("style").attr("style", $style);
+    $head.html($meta);
+    $body.html($object);
+} else if ($video.length > 0) {
+    $head.html($meta);
+    $body.html('<div id="video"></div>'+$github);
+    $("#video").html($video);
 } else {
     if ($iframes.length > 1) {
         for (var i = 0; i <= $iframes.length; i++) {
-            var thisSrc = $("iframe:eq(" + i + ")").attr("src");
-            if (confirm("Is this the correct source?\n\n" + thisSrc)) {
-                var src = thisSrc;
+            $ask = $("iframe:eq("+i+")").attr("src");
+            if (confirm("Is this the correct source?\n\n"+$ask)) {
+                $source = $ask;
                 break;
             }
         }
     } else {
-        var src = $iframes.attr("src");
+        $source = $iframes.attr("src");
     }
-    if (src) {
-        var $style = "position:relative;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both;";
-        $("head").html($head);
-        $("body").attr("style", "margin:30px 0px 0px;padding:0px;text-align:center;background:#000;").html('<div id="video" style="'+$style+'"><iframe src="' + src + '" width="100%" height="100%" frameBorder="0" scrolling="no" style="margin:0px;padding:0px;border:0px;overflow:hidden;"></iframe></div>');
+
+    if ($source) {
+        $head.html($meta);
+        $body.html('<div id="video"><iframe src="'+$source+'" width="100%" height="100%" frameBorder="0" scrolling="no"></iframe></div>'+$github);
     } else {
-        alert("There are no more video sources on this page.\n\nThis script was last updated 2020-07-01. Check out https://github.com/greatkingrat/cleanstream/ for updates.");
+        alert("There are no more video sources on this page.");
     }
 }
 
 setTimeout(function(){
-    $("video").attr("style", "max-width:100%;max-height:100%;").attr("controls", "yes");
+    $("video").attr("controls", "yes");
 }, 100);
 
 setInterval(function(){
@@ -60,8 +59,8 @@ setInterval(function(){
 var $timeout;
 window.addEventListener("mousemove", function(){
     clearTimeout($timeout);
-    $("body").removeClass("idle");
+    $body.removeClass("idle");
     $timeout = setTimeout(function(){
-        $("body").addClass("idle");
+        $body.addClass("idle");
     }, 5000);
 }, true);
