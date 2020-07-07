@@ -16,17 +16,16 @@ var $stylesheet = [];
     $stylesheet.push('video{max-width:100%;max-height:100%}');
 
 var $meta = '<title>CleanStream</title><style type="text/css">'+$stylesheet.join("\n")+'</style>';
-var $github = '<a href="https://github.com/greatkingrat/cleanstream/">Github</a>';
+var $github = '<a href="https://github.com/greatkingrat/cleanstream/">GitHub</a>';
 
 if ($objects.length > 0) {
     $object = $objects.parent();
     $object.removeAttr("style").attr("style", $style);
     $head.html($meta);
-    $body.html($object);
+    $body.html($object+$github);
 } else if ($video.length > 0) {
     $head.html($meta);
-    $body.html('<div id="video"></div>'+$github);
-    $("#video").html($video);
+    $body.html('<div id="video">'+$video+'</div>'+$github);
 } else {
     if ($iframes.length > 1) {
         for (var i = 0; i <= $iframes.length; i++) {
