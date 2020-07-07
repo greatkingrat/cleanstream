@@ -1,3 +1,4 @@
+var jQuery = $;
 var $domain = (location.host.match(/([^.]+)\.\w{2,3}(?:\.\w{2})?$/) || [])[1];
 var $iframes = $("iframe");
 var $objects = $("object");
@@ -7,7 +8,7 @@ var $stylesheet = [];
 
 $stylesheet.push('.idle{cursor:none!important;}');
 
-var $head = '<title>Title</title><style type="text/css">'+$stylesheet.join("\n")+'</style>';
+var $head = '<title>CleanStream</title><style type="text/css">'+$stylesheet.join("\n")+'</style>';
 
 if ($embeds.includes($domain) && $objects.length > 0) {
     var $style = "position:relative;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both;";
@@ -48,28 +49,19 @@ if ($embeds.includes($domain) && $objects.length > 0) {
     }
 }
 
-    setTimeout(function(){
-        $("video").attr("style", "max-width:100%;max-height:100%;");
-    }, 100);
+setTimeout(function(){
+    $("video").attr("style", "max-width:100%;max-height:100%;").attr("controls", "yes");
+}, 100);
 
-    setInterval(function(){
-        $("script").remove();
+setInterval(function(){
+    $("script").remove();
+}, 5000);
+
+var $timeout;
+window.addEventListener("mousemove", function(){
+    clearTimeout($timeout);
+    $("body").removeClass("idle");
+    $timeout = setTimeout(function(){
+        $("body").addClass("idle");
     }, 5000);
-
-    var $timeout;
-    window.addEventListener("mousemove", function(){
-        clearTimeout($timeout);
-        $("body").removeClass("idle");
-        $timeout = setTimeout(function(){
-            $("body").addClass("idle");
-        }, 5000);
-    }, true);
-
-var s = document.createElement("script");
-s.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js";
-if (s.addEventListener) {
-    s.addEventListener("load", callback, false)
-} else if (s.readyState) {
-    s.onreadystatechange = callback
-}
-document.body.appendChild(s);
+}, true);
