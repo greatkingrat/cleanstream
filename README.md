@@ -18,6 +18,4 @@ Save the following code as a bookmark in your browser, and then click on it when
 
 ## But Also
 
-The `cleanstream.js` shows the expanded code, which is then converted into a bookmarklet using [Bookmarkleter](https://chriszarate.github.io/bookmarkleter/).
-
-It scans the HTML of the current page and tries to find the video source. If it finds more than one, it'll ask you for the right one.
+The `cleanstream.js` file shows the expanded code, which is then converted into a bookmarklet using [Bookmarkleter](https://chriszarate.github.io/bookmarkleter/).
