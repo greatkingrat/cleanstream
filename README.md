@@ -8,7 +8,7 @@ A bookmarklet for turning your video stream from this:
 
 To this:
 
-![after](https://i.imgur.com/Z6CmL4H.jpg)
+![after](https://i.imgur.com/pV8C73h.jpg)
 
 ## How Do
 
