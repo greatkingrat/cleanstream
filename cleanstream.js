@@ -8,6 +8,7 @@ var $video = $("video");
 var $style = 'position:relative;z-index:1;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both';
 var $ask, $source, $object;
 var $stylesheet = [];
+    $stylesheet.push('html,body{height:100%}');
     $stylesheet.push('body{margin:30px 0px 0px;padding:0px;text-align:center;background:#000;overflow:hidden}');
     $stylesheet.push('.idle{cursor:none!important}');
     $stylesheet.push('#video{'+$style+'}');
