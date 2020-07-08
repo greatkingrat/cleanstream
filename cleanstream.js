@@ -25,7 +25,8 @@ if ($objects.length > 0) {
     $body.html($object+$github);
 } else if ($video.length > 0) {
     $head.html($meta);
-    $body.html('<div id="video">'+$video+'</div>'+$github);
+    $body.html('<div id="video"></div>'+$github);
+    $("#video").html($video);
 } else {
     if ($iframes.length > 1) {
         for (var i = 0; i <= $iframes.length; i++) {
