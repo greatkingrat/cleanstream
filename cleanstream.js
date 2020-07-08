@@ -28,9 +28,10 @@
     var $ask, $source, $object, $timeout;
     var $stylesheet = [];
         $stylesheet.push('html,body{height:100%}');
-        $stylesheet.push('body{margin:30px 0px 0px;padding:0px;text-align:center;background:#000;overflow:hidden}');
+        $stylesheet.push('body{padding:30px 0px 0px;margin:0px;text-align:center;background:#000;overflow:hidden}');
         $stylesheet.push('.idle{cursor:none!important}');
         $stylesheet.push('#video{'+$style+'}');
+        $stylesheet.push('#video.idle{resize:none}');
         $stylesheet.push('a{position:absolute;z-index:0;top:200px;left:0;width:100%;text-align:center;color:#fff}');
         $stylesheet.push('iframe{margin:0px;padding:0px;border:0px;overflow:hidden}');
         $stylesheet.push('video{max-width:100%;max-height:100%}');
@@ -73,6 +74,8 @@
         }
     }
 
+    var $video
+
     setTimeout(function(){
         $jQ("video").attr("controls", "yes");
     }, 100);
@@ -80,14 +83,16 @@
     setInterval(function(){
         $jQ("*").not("html,head,#style,#jq,body,#video,#video *").remove();
         $jQ("[onclick]").removeAttr("onclick");
-        $jQ("[style]").removeAttr("style");
+        $jQ("[style]").not("#video[style]").removeAttr("style");
     }, 1000);
 
     window.addEventListener("mousemove", function(){
         clearTimeout($timeout);
         $body.removeClass("idle");
+        $("#video").removeClass("idle");
         $timeout = setTimeout(function(){
             $body.addClass("idle");
+            $("#video").addClass("idle");
         }, 3000);
     }, true);
 });
