@@ -74,25 +74,25 @@
         }
     }
 
-    var $video
-
     setTimeout(function(){
         $jQ("video").attr("controls", "yes");
+        $video = $("#video");
     }, 100);
 
     setInterval(function(){
         $jQ("*").not("html,head,#style,#jq,body,#video,#video *").remove();
         $jQ("[onclick]").removeAttr("onclick");
         $jQ("[style]").not("#video[style]").removeAttr("style");
+        $jQ("[class]").not(".idle").removeAttr("class");
     }, 1000);
 
     window.addEventListener("mousemove", function(){
         clearTimeout($timeout);
         $body.removeClass("idle");
-        $("#video").removeClass("idle");
+        $video.removeClass("idle");
         $timeout = setTimeout(function(){
             $body.addClass("idle");
-            $("#video").addClass("idle");
+            $video.addClass("idle");
         }, 3000);
     }, true);
 });
