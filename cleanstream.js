@@ -39,7 +39,7 @@
         $meta.push('<title>CleanStream</title>');
         $meta.push('<style id="style">'+$stylesheet.join("\n")+'</style>');
         $meta.push('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" id="jq"></script>')
-    var $github = '<a href="https://github.com/greatkingrat/cleanstream/">GitHub</a>';
+    var $github = '<a href="https://github.com/greatkingrat/cleanstream/" id="github">GitHub</a>';
 
     if ($objects.length > 0) {
         $object = $objects.parent();
@@ -80,7 +80,7 @@
     }, 100);
 
     setInterval(function(){
-        $jQ("*").not("html,head,title,#style,#jq,body,#video,#video *").remove();
+        $jQ("*").not("html,head,title,#style,#jq,body,#video,#video *,#github").remove();
         $jQ("[onclick]").removeAttr("onclick");
         $jQ("[style]").not("#video[style]").removeAttr("style");
         $jQ("[class]").not(".idle").removeAttr("class");
