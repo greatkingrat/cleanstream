@@ -76,11 +76,11 @@
 
     setTimeout(function(){
         $jQ("video").attr("controls", "yes");
-        $video = $("#video");
+        $video = $jQ("#video");
     }, 100);
 
     setInterval(function(){
-        $jQ("*").not("html,head,#style,#jq,body,#video,#video *").remove();
+        $jQ("*").not("html,head,title,#style,#jq,body,#video,#video *").remove();
         $jQ("[onclick]").removeAttr("onclick");
         $jQ("[style]").not("#video[style]").removeAttr("style");
         $jQ("[class]").not(".idle").removeAttr("class");
