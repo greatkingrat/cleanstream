@@ -56,11 +56,9 @@
         if ($iframes.length > 1) {
             for (var i = 0; i <= $iframes.length; i++) {
                 $ask = $jQ("iframe:eq("+i+")").attr("src");
-                if (!$ask.includes("youtube")) {
-                    if (confirm("Is this the correct source?\n\n"+$ask)) {
-                        $source = $ask;
-                        break;
-                    }
+                if (confirm("Is this the correct source?\n\n"+$ask)) {
+                    $source = $ask;
+                    break;
                 }
             }
         } else {
