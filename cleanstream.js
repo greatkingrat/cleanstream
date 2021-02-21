@@ -23,40 +23,41 @@
     var $body = $jQ("body");
     var $iframes = $jQ("iframe");
     var $objects = $jQ("object");
-    var $video = $jQ("video");
-    var $style = 'position:relative;z-index:1;width:1024px;height:576px;margin:0px auto;padding:0px;border:0px;overflow:hidden;resize:both';
-    var $ask, $source, $object, $timeout;
+    var $video_object = $jQ("video");
+    var $style = 'position:fixed;z-index:1;width:100%;height:100%;margin:0 auto;padding:0;border:0;';
+    var $ask, $video, $source, $object, $timeout, $body_html;
     var $stylesheet = [];
-        $stylesheet.push('html,body{height:100%}');
-        $stylesheet.push('body{padding:30px 0px 0px;margin:0px;text-align:center;background:#000;overflow:hidden}');
-        $stylesheet.push('.idle{cursor:none!important}');
-        $stylesheet.push('#video{'+$style+'}');
-        $stylesheet.push('#video.idle{resize:none}');
-        $stylesheet.push('a{position:absolute;z-index:0;top:200px;left:0;width:100%;text-align:center;color:#fff}');
-        $stylesheet.push('iframe{margin:0px;padding:0px;border:0px;overflow:hidden}');
-        $stylesheet.push('video{max-width:100%;max-height:100%}');
+        $stylesheet.push('html,body { height:100%;font:normal 400 12px/12px serif; }');
+        $stylesheet.push('body { padding:0 0 0;margin:0;text-align:center;background:#000;overflow:hidden; }');
+        $stylesheet.push('.idle { cursor:none!important; }');
+        $stylesheet.push('#video { '+$style+'; }');
+        $stylesheet.push('#video.idle { resize:none; }');
+        $stylesheet.push('a { position:absolute;z-index:2;top:10px;right:10px;color:#222;text-decoration:none; }');
+        $stylesheet.push('a:hover { color:#666; }');
+        $stylesheet.push('a.idle { display:none; }');
+        $stylesheet.push('iframe { margin:0;padding:0;border:0;overflow:hidden; }');
+        $stylesheet.push('video { position:fixed;width:100%;height:100%;top:0;right:0;bottom:0;left:0; }');
     var $meta = [];
         $meta.push('<title>CleanStream</title>');
         $meta.push('<style id="style">'+$stylesheet.join("\n")+'</style>');
-        $meta.push('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" id="jq"></script>')
+        $meta.push('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" id="jq"></script>');
     var $github = '<a href="https://github.com/greatkingrat/cleanstream/" id="github">GitHub</a>';
 
     if ($objects.length > 0) {
         $object = $objects.parent();
         $object.removeAttr("style").attr("style", $style);
-        while($html.attributes.length>0){$html.removeAttribute($html.attributes[0].name);}
+        removeAtts($html, $body);
         $head.html($meta.join("\n"));
-        $body.html($object+$github);
-    } else if ($video.length > 0) {
-        while($html.attributes.length>0){$html.removeAttribute($html.attributes[0].name);}
+        $body_html = $object+$github;
+    } else if ($video_object.length > 0) {
+        removeAtts($html, $body);
         $head.html($meta.join("\n"));
-        $body.html('<div id="video"></div>'+$github);
-        $jQ("#video").html($video);
-    } else {
+        $body_html = '<div id="video"></div>'+$github;
+    } else if ($iframes.length > 0) {
         if ($iframes.length > 1) {
             for (var i = 0; i <= $iframes.length; i++) {
                 $ask = $jQ("iframe:eq("+i+")").attr("src");
-                if (confirm("Is this the correct source?\n\n"+$ask)) {
+                if ($ask && confirm("Is this the correct source?\n\n"+$ask)) {
                     $source = $ask;
                     break;
                 }
@@ -66,16 +67,21 @@
         }
 
         if ($source) {
-            while($html.attributes.length>0){$html.removeAttribute($html.attributes[0].name);}
+            removeAtts($html, $body);
             $head.html($meta.join("\n"));
-            $body.html('<div id="video"><iframe src="'+$source+'" width="100%" height="100%" frameBorder="0" scrolling="no"></iframe></div>'+$github);
+            $body_html = '<div id="video"><iframe src="'+$source+'" width="100%" height="100%" frameBorder="0" scrolling="no"></iframe></div>'+$github;
         } else {
             alert("There are no more video sources on this page.");
         }
     }
 
+    $body.html($body_html);
+    if ($video_object.length > 0) {
+        $jQ("#video").html($video_object);
+    }
+
     setTimeout(function(){
-        $jQ("video").attr("controls", "yes");
+        $jQ("video").attr("controls", "yes").attr("autoplay", "yes");
         $video = $jQ("#video");
     }, 100);
 
@@ -84,15 +90,31 @@
         $jQ("[onclick]").removeAttr("onclick");
         $jQ("[style]").not("#video[style]").removeAttr("style");
         $jQ("[class]").not(".idle").removeAttr("class");
+
+        if ($("body").is(":empty")) {
+            $body.html($body_html);
+
+            if ($video.length > 0) {
+                $jQ("#video").html($video_object);
+                $video_object.trigger("play");
+            }
+        }
     }, 1000);
 
     window.addEventListener("mousemove", function(){
         clearTimeout($timeout);
         $body.removeClass("idle");
         $video.removeClass("idle");
+        $("a").removeClass("idle");
         $timeout = setTimeout(function(){
             $body.addClass("idle");
             $video.addClass("idle");
+            $("a").addClass("idle");
         }, 3000);
     }, true);
+
+    function removeAtts($html, $body) {
+        if ($html.attributes) { while($html.attributes.length>0){$html.removeAttribute($html.attributes[0].name);} }
+        if ($body[0].attributes) { while($body[0].attributes.length>0){$body[0].removeAttribute($body[0].attributes[0].name);} }
+    }
 });
