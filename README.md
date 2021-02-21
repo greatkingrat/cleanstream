@@ -2,13 +2,13 @@
 
 ## What Is
 
-A bookmarklet for turning your video stream from this:
+A [bookmarklet](https://en.wikipedia.org/wiki/Bookmarklet) for turning your video stream from this:
 
-![before](https://i.imgur.com/RNwsjzQ.png)
+![before](https://i.imgur.com/NTTqNcV.png)
 
 To this:
 
-![after](https://i.imgur.com/2pVCi3e.png)
+![after](https://i.imgur.com/Xq069iI.png)
 
 ## How Do
 
