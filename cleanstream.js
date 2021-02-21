@@ -30,7 +30,7 @@
         $stylesheet.push('html,body { height:100%;font:normal 400 12px/12px serif; }');
         $stylesheet.push('body { padding:0 0 0;margin:0;text-align:center;background:#000;overflow:hidden; }');
         $stylesheet.push('.idle { cursor:none!important; }');
-        $stylesheet.push('#video { '+$style+'; }');
+        $stylesheet.push('#video { '+$style+' }');
         $stylesheet.push('#video.idle { resize:none; }');
         $stylesheet.push('a { position:absolute;z-index:2;top:10px;right:10px;color:#222;text-decoration:none; }');
         $stylesheet.push('a:hover { color:#666; }');
