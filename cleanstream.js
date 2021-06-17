@@ -1,8 +1,8 @@
 (function(window, document, version, callback) {
-    var j, d;
-    var loaded = false;
+    let j, d;
+    let loaded = false;
     if (!(j = window.jQuery) || version > j.fn.jquery || callback(j, loaded)) {
-        var script = document.createElement("script");
+        let script = document.createElement("script");
         script.type = "text/javascript";
         script.id = "jq"
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js';
@@ -17,16 +17,17 @@
 })(window, document, "3.5.1", function($jQ, jquery_loaded) {
     $jQ.noConflict();
 
-    var $domain = (location.host.match(/([^.]+)\.\w{2,3}(?:\.\w{2})?$/) || [])[1];
-    var $html = $jQ("html")[0];
-    var $head = $jQ("head");
-    var $body = $jQ("body");
-    var $iframes = $jQ("iframe");
-    var $objects = $jQ("object");
-    var $video_object = $jQ("video");
-    var $style = 'position:fixed;z-index:1;width:100%;height:100%;margin:0 auto;padding:0;border:0;';
-    var $ask, $video, $source, $object, $timeout, $body_html;
-    var $stylesheet = [];
+    let $domain = (location.host.match(/([^.]+)\.\w{2,3}(?:\.\w{2})?$/) || [])[1];
+    let $protocol = location.protocol;
+    let $html = $jQ("html")[0];
+    let $head = $jQ("head");
+    let $body = $jQ("body");
+    let $iframes = $jQ("iframe");
+    let $objects = $jQ("object");
+    let $video_object = $jQ("video");
+    let $style = 'position:fixed;z-index:1;width:100%;height:100%;margin:0 auto;padding:0;border:0;';
+    let $ask, $video, $source, $object, $timeout, $body_html;
+    let $stylesheet = [];
         $stylesheet.push('html,body { height:100%;font:normal 400 12px/12px serif; }');
         $stylesheet.push('body { padding:0 0 0;margin:0;text-align:center;background:#000;overflow:hidden; }');
         $stylesheet.push('.idle { cursor:none!important; }');
@@ -37,11 +38,11 @@
         $stylesheet.push('a.idle { display:none; }');
         $stylesheet.push('iframe { margin:0;padding:0;border:0;overflow:hidden; }');
         $stylesheet.push('video { position:fixed;width:100%;height:100%;top:0;right:0;bottom:0;left:0; }');
-    var $meta = [];
+    let $meta = [];
         $meta.push('<title>CleanStream</title>');
         $meta.push('<style id="style">'+$stylesheet.join("\n")+'</style>');
         $meta.push('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" id="jq"></script>');
-    var $github = '<a href="https://github.com/greatkingrat/cleanstream/" id="github">GitHub</a>';
+    let $github = '<a href="https://github.com/greatkingrat/cleanstream/" id="github">GitHub</a>';
 
     if ($objects.length > 0) {
         $object = $objects.parent();
@@ -55,7 +56,7 @@
         $body_html = '<div id="video"></div>'+$github;
     } else if ($iframes.length > 0) {
         if ($iframes.length > 1) {
-            for (var i = 0; i <= $iframes.length; i++) {
+            for (let i = 0; i <= $iframes.length; i++) {
                 $ask = $jQ("iframe:eq("+i+")").attr("src");
                 if ($ask && confirm("Is this the correct source?\n\n"+$ask)) {
                     $source = $ask;
@@ -66,7 +67,10 @@
             $source = $iframes.attr("src");
         }
 
-        if ($source) {
+        if ($source && $domain === 'hesgoal') {
+            confirm('The page will now reload, play the video and press the CleanStream bookmark again.');
+            window.location = location.protocol+$source;
+        } else if ($source) {
             removeAtts($html, $body);
             $head.html($meta.join("\n"));
             $body_html = '<div id="video"><iframe src="'+$source+'" width="100%" height="100%" frameBorder="0" scrolling="no"></iframe></div>'+$github;
