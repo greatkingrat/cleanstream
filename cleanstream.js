@@ -76,46 +76,50 @@
             $body_html = '<div id="video"><iframe src="'+$source+'" width="100%" height="100%" frameBorder="0" scrolling="no"></iframe></div>'+$github;
         } else {
             alert("There are no more video sources on this page.");
+            $body_html = '';
         }
     }
 
-    $body.html($body_html);
-    if ($video_object.length > 0) {
-        $jQ("#video").html($video_object);
-    }
+    if ($body_html !== '') {
+        $body.html($body_html);
 
-    setTimeout(function(){
-        $jQ("video").attr("controls", "yes").attr("autoplay", "yes");
-        $video = $jQ("#video");
-    }, 100);
+        if ($video_object.length > 0) {
+            $jQ("#video").html($video_object);
+        }
 
-    setInterval(function(){
-        $jQ("*").not("html,head,title,#style,#jq,body,#video,#video *,#github").remove();
-        $jQ("[onclick]").removeAttr("onclick");
-        $jQ("[style]").not("#video[style]").removeAttr("style");
-        $jQ("[class]").not(".idle").removeAttr("class");
+        setTimeout(function(){
+            $jQ("video").attr("controls", "yes").attr("autoplay", "yes");
+            $video = $jQ("#video");
+        }, 100);
 
-        if ($("body").is(":empty")) {
-            $body.html($body_html);
+        setInterval(function(){
+            $jQ("*").not("html,head,title,#style,#jq,body,#video,#video *,#github").remove();
+            $jQ("[onclick]").removeAttr("onclick");
+            $jQ("[style]").not("#video[style]").removeAttr("style");
+            $jQ("[class]").not(".idle").removeAttr("class");
 
-            if ($video.length > 0) {
-                $jQ("#video").html($video_object);
-                $video_object.trigger("play");
+            if ($("body").is(":empty")) {
+                $body.html($body_html);
+
+                if ($video.length > 0) {
+                    $jQ("#video").html($video_object);
+                    $video_object.trigger("play");
+                }
             }
-        }
-    }, 1000);
+        }, 1000);
 
-    window.addEventListener("mousemove", function(){
-        clearTimeout($timeout);
-        $body.removeClass("idle");
-        $video.removeClass("idle");
-        $("a").removeClass("idle");
-        $timeout = setTimeout(function(){
-            $body.addClass("idle");
-            $video.addClass("idle");
-            $("a").addClass("idle");
-        }, 3000);
-    }, true);
+        window.addEventListener("mousemove", function(){
+            clearTimeout($timeout);
+            $body.removeClass("idle");
+            $video.removeClass("idle");
+            $("a").removeClass("idle");
+            $timeout = setTimeout(function(){
+                $body.addClass("idle");
+                $video.addClass("idle");
+                $("a").addClass("idle");
+            }, 3000);
+        }, true);
+    }
 
     function removeAtts($html, $body) {
         if ($html.attributes) { while($html.attributes.length>0){$html.removeAttribute($html.attributes[0].name);} }
