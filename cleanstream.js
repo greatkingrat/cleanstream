@@ -67,13 +67,9 @@
             $source = $iframes.attr("src");
         }
 
-        if ($source && $domain === 'hesgoal') {
+        if ($source) {
             confirm('The page will now reload, play the video and press the CleanStream bookmark again.');
-            window.location = location.protocol+$source;
-        } else if ($source) {
-            removeAtts($html, $body);
-            $head.html($meta.join("\n"));
-            $body_html = '<div id="video"><iframe src="'+$source+'" width="100%" height="100%" frameBorder="0" scrolling="no"></iframe></div>'+$github;
+            window.location = $source;
         } else {
             alert("There are no more video sources on this page.");
             $body_html = '';
