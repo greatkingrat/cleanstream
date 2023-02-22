@@ -70,7 +70,7 @@
 
                 $ask = $jQ("iframe:eq("+i+")").attr("src");
 
-                if ($ask && confirm("Is this the correct source?\n\n"+$ask)) {
+                if ($ask && $ask !== 'about:blank' && confirm("Is this the correct source?\n\n"+$ask)) {
                     $source = $ask;
                     break;
                 }
