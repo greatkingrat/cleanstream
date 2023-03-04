@@ -84,7 +84,6 @@
 
         if ($source) {
 
-            confirm('The page will now reload, play the video and press the CleanStream bookmark again.');
             window.location = $source;
 
         } else {
