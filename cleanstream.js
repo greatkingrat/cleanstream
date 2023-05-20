@@ -17,36 +17,35 @@
 })(window, document, "3.5.1", function($jQ, jquery_loaded) {
     $jQ.noConflict();
 
-    let $domain = (location.host.match(/([^.]+)\.\w{2,3}(?:\.\w{2})?$/) || [])[1];
-    let $protocol = location.protocol;
-    let $html = $jQ("html")[0];
-    let $head = $jQ("head");
-    let $body = $jQ("body");
-    let $title = $head.find("title").text();
-    let $iframes = $jQ("iframe");
-    let $objects = $jQ("object");
-    let $video_object = $jQ("video");
-    let $style = 'position:fixed;z-index:1;width:100%;height:100%;margin:0 auto;padding:0;border:0;';
+    const $domain = (location.host.match(/([^.]+)\.\w{2,3}(?:\.\w{2})?$/) || [])[1];
+    const $protocol = location.protocol;
+    const $html = $jQ("html")[0];
+    const $head = $jQ("head");
+    const $body = $jQ("body");
+    const $title = $head.find("title").text();
+    const $iframes = $jQ("iframe");
+    const $objects = $jQ("object");
+    const $video_object = $jQ("video");
+    const $style = 'position:fixed;z-index:1;width:100%;height:100%;margin:0 auto;padding:0;border:0;';
+    const $stylesheet = [];
+          $stylesheet.push('html,body { height:100%;font:normal 400 12px/12px serif; }');
+          $stylesheet.push('body { padding:0 0 0;margin:0;text-align:center;background:#000;overflow:hidden; }');
+          $stylesheet.push('.idle { cursor:none!important; }');
+          $stylesheet.push('#video { '+$style+' }');
+          $stylesheet.push('#video.idle { resize:none; }');
+          $stylesheet.push('a { position:absolute;z-index:2;top:10px;right:10px;color:#222;text-decoration:none; }');
+          $stylesheet.push('a:hover { color:#666; }');
+          $stylesheet.push('a.idle { display:none; }');
+          $stylesheet.push('iframe { margin:0;padding:0;border:0;overflow:hidden; }');
+          $stylesheet.push('video { position:fixed;width:100%;height:100%;top:0;right:0;bottom:0;left:0; }');
+    const $meta = [];
+          $meta.push('<title>'+$title+'</title>');
+          $meta.push('<style id="style">'+$stylesheet.join("\n")+'</style>');
+          $meta.push('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" id="jq"></script>');
+    const $github = '<a href="https://github.com/greatkingrat/cleanstream/" id="github">GitHub</a>';
+    const $ignore = ['about:blank', 'javascript:false'];
+
     let $ask, $video, $source, $object, $timeout, $body_html;
-
-    let $stylesheet = [];
-        $stylesheet.push('html,body { height:100%;font:normal 400 12px/12px serif; }');
-        $stylesheet.push('body { padding:0 0 0;margin:0;text-align:center;background:#000;overflow:hidden; }');
-        $stylesheet.push('.idle { cursor:none!important; }');
-        $stylesheet.push('#video { '+$style+' }');
-        $stylesheet.push('#video.idle { resize:none; }');
-        $stylesheet.push('a { position:absolute;z-index:2;top:10px;right:10px;color:#222;text-decoration:none; }');
-        $stylesheet.push('a:hover { color:#666; }');
-        $stylesheet.push('a.idle { display:none; }');
-        $stylesheet.push('iframe { margin:0;padding:0;border:0;overflow:hidden; }');
-        $stylesheet.push('video { position:fixed;width:100%;height:100%;top:0;right:0;bottom:0;left:0; }');
-
-    let $meta = [];
-        $meta.push('<title>'+$title+'</title>');
-        $meta.push('<style id="style">'+$stylesheet.join("\n")+'</style>');
-        $meta.push('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" id="jq"></script>');
-
-    let $github = '<a href="https://github.com/greatkingrat/cleanstream/" id="github">GitHub</a>';
 
     if ($objects.length > 0) {
 
@@ -70,7 +69,7 @@
 
                 $ask = $jQ("iframe:eq("+i+")").attr("src");
 
-                if ($ask && $ask !== 'about:blank' && confirm("Is this the correct source?\n\n"+$ask)) {
+                if ($ask && $ignore.includes($ask) === false && confirm("Is this the correct source?\n\n"+$ask)) {
                     $source = $ask;
                     break;
                 }
@@ -89,7 +88,7 @@
         } else {
 
             alert("There are no more video sources on this page.");
-            $body_html = '';
+            return false;
 
         }
     }
